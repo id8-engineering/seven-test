@@ -1,0 +1,7 @@
+tests:
+  seven.modem:
+    platform_allow:
+      - seven/nrf9151/ns
+    tags:
+      - modem
+    harness: ztest
