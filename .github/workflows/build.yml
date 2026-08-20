@@ -34,4 +34,4 @@ jobs:
 
       - name: Build firmware
         working-directory: seven-test
-        run: west build -p always -b seven/nrf9151/ns app
+        run: west build -p always -b seven/nrf9151/ns tests

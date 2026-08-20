@@ -106,7 +106,7 @@ Now your workspace is ready.
 Build Seven Test for Seven:
 
 ```bash
-west build -p always -b seven/nrf9151/ns app
+west build -p always -b seven/nrf9151/ns tests
 ```
 
 ## Flash
