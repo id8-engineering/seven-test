@@ -1,7 +1,9 @@
 tests:
-  seven.modem:
+  seven.hardware:
     platform_allow:
       - seven/nrf9151/ns
     tags:
-      - modem
+      - hardware
     harness: ztest
+    extra_configs:
+      - CONFIG_ZTEST_SHELL=n

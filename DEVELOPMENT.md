@@ -88,6 +88,8 @@ Twister builds the test firmware, flashes Seven, monitors the test output, and w
 reports.
 
 ```bash
-west twister -T tests -p seven/nrf9151/ns \
-  --device-testing --device-serial /dev/ttyACM0
+west twister -T tests \
+    -p seven/nrf9151/ns \
+    --device-testing \
+    --device-serial /dev/ttyACM0
 ```
