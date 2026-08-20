@@ -19,7 +19,7 @@ TEST_FIRMWARE_URL="https://github.com/id8-engineering/seven-test/releases/downlo
 SERIAL_DEVICE_PATTERN="usb-Raspberry_Pi_Debug_Probe_*-if01"
 SERIAL_PORT="$(find /dev/serial/by-id -maxdepth 1 -type l \
   -name "$SERIAL_DEVICE_PATTERN" -print -quit 2>/dev/null || true)"
-TEST_TIMEOUT=60
+TEST_TIMEOUT=660
 
 status() {
   printf '\033[1;36m%s\033[0m\n' "$1"
