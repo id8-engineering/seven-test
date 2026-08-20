@@ -1,0 +1,24 @@
+# Copyright (c) 2026 ID8 Engineering AB
+# SPDX-License-Identifier: Apache-2.0
+
+manifest:
+  remotes:
+    - name: ncs
+      url-base: https://github.com/nrfconnect
+    - name: id8
+      url-base: https://github.com/id8-engineering
+
+  projects:
+    - name: nrf
+      remote: ncs
+      repo-path: sdk-nrf
+      revision: v3.4.0
+      import: true
+
+    - name: seven-board
+      remote: id8
+      revision: main
+      path: modules/seven-board
+
+  self:
+    path: seven-test
