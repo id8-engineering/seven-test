@@ -29,7 +29,7 @@ as shown below.
 Run the complete Seven test:
 
 ```bash
-VERSION=v0.0.1
+VERSION=v0.0.2
 
 mkdir -p ~/seven-test
 cd ~/seven-test
