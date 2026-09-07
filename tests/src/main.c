@@ -82,7 +82,7 @@ ZTEST(modem, test_gnss_fix) {
   err = nrf_modem_gnss_fix_interval_set(0);
   zassert_ok(err, "Failed to configure single-fix mode: %d", err);
 
-  err = nrf_modem_gnss_fix_retry_set(0);
+  err = nrf_modem_gnss_fix_retry_set(600);
   zassert_ok(err, "Failed to configure GNSS retry: %d", err);
 
   err = nrf_modem_gnss_start();
