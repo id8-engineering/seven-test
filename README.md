@@ -1,5 +1,9 @@
 # Seven test
 
+Seven production test is tested and verified on:
+
+* Ubuntu 24.0
+
 ## Prerequisites
 
 * [Raspberry Pi Debug Probe](https://www.electrokit.com/raspberry-pi-debug-probe.)
