@@ -51,7 +51,7 @@ status "Installing Python dependencies"
 .venv/bin/pip install -r "$REQUIREMENTS"
 
 status "Flashing modem firmware"
-.venv/bin/pyocd cmd -t nrf91 -f 100000 \
+.venv/bin/pyocd cmd -t nrf91 -f 100000 -O auto_unlock \
   -c "nrf91-update-modem-fw -f $MODEM_FIRMWARE"
 
 status "Using Seven Test $VERSION"
@@ -61,7 +61,7 @@ stty -F "$SERIAL_PORT" 115200 raw -echo
 exec 3<>"$SERIAL_PORT"
 
 status "Flashing Seven Test $VERSION"
-probe-rs download --chip nRF9151_xxAA --speed 100 \
+probe-rs download --chip nRF9151_xxAA --speed 100 --allow-erase-all \
   --binary-format hex "$TEST_FIRMWARE"
 
 status "Resetting Seven"
