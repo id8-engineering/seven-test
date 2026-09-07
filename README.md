@@ -8,7 +8,7 @@ Install the required Ubuntu packages:
 
 ```bash
 sudo apt update
-sudo apt install curl python3 python3-venv
+sudo apt install curl python3 python3-venv unzip
 ```
 
 Install probe-rs:
@@ -29,16 +29,7 @@ as shown below.
 Run the complete Seven test:
 
 ```bash
-VERSION=v0.0.2
-
-mkdir -p ~/seven-test
-cd ~/seven-test
-
-curl -fL "https://raw.githubusercontent.com/id8-engineering/seven-test/$VERSION/scripts/test.sh" -o test.sh
-curl -fL "https://raw.githubusercontent.com/id8-engineering/seven-test/$VERSION/requirements.txt" -o requirements.txt
-
-chmod +x test.sh
-./test.sh --version "$VERSION"
+bash -c 'VERSION=v0.0.2; mkdir -p "$HOME/seven-test" && cd "$HOME/seven-test" && curl -fL "https://raw.githubusercontent.com/id8-engineering/seven-test/$VERSION/scripts/test.sh" -o test.sh && chmod +x test.sh && ./test.sh --version "$VERSION"'
 ```
 
 ## Develop
