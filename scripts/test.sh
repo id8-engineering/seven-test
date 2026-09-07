@@ -12,12 +12,11 @@ fi
 
 VERSION="$2"
 
-ARCHIVE="seven-test-$VERSION.zip"
-ARCHIVE_URL="https://github.com/id8-engineering/seven-test/releases/download/$VERSION/$ARCHIVE"
-PACKAGE_DIR="seven-test-$VERSION"
-MODEM_FIRMWARE="$PACKAGE_DIR/firmware/mfw_nrf91x1_2.0.4.zip"
-TEST_FIRMWARE="$PACKAGE_DIR/seven-test.hex"
-REQUIREMENTS="$PACKAGE_DIR/requirements.txt"
+SEVEN_TEST_DIR="$HOME/seven-test"
+VENV="$SEVEN_TEST_DIR/.venv"
+MODEM_FIRMWARE="$SEVEN_TEST_DIR/firmware/mfw_nrf91x1_2.0.4.zip"
+TEST_FIRMWARE="$SEVEN_TEST_DIR/seven-test.hex"
+REQUIREMENTS="$SEVEN_TEST_DIR/requirements.txt"
 SERIAL_DEVICE_PATTERN="usb-Raspberry_Pi_Debug_Probe_*-if01"
 SERIAL_PORT="$(find /dev/serial/by-id -maxdepth 1 -type l \
   -name "$SERIAL_DEVICE_PATTERN" -print -quit 2>/dev/null || true)"
@@ -34,24 +33,14 @@ if [[ -z "$SERIAL_PORT" ]]; then
   exit 1
 fi
 
-if [[ ! -f "$ARCHIVE" ]]; then
-  status "Downloading Seven Test $VERSION"
-  curl -fL "$ARCHIVE_URL" -o "$ARCHIVE"
-fi
-
-if [[ ! -f "$TEST_FIRMWARE" || ! -f "$MODEM_FIRMWARE" || ! -f "$REQUIREMENTS" ]]; then
-  status "Extracting Seven Test $VERSION"
-  unzip -oq "$ARCHIVE" -d "$PACKAGE_DIR"
-fi
-
 status "Creating Python virtual environment"
-python3 -m venv .venv
+python3 -m venv "$VENV"
 
 status "Installing Python dependencies"
-.venv/bin/pip install -r "$REQUIREMENTS"
+"$VENV/bin/pip" install -r "$REQUIREMENTS"
 
 status "Flashing modem firmware"
-.venv/bin/pyocd cmd -t nrf91 -f 100000 -O auto_unlock \
+"$VENV/bin/pyocd" cmd -t nrf91 -f 100000 -O auto_unlock \
   -c "nrf91-update-modem-fw -f $MODEM_FIRMWARE"
 
 status "Using Seven Test $VERSION"
