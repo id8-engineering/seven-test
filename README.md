@@ -29,7 +29,7 @@ as shown below.
 Run the complete Seven test:
 
 ```bash
-bash -c 'VERSION=v0.0.2; mkdir -p "$HOME/seven-test" && cd "$HOME/seven-test" && curl -fL "https://raw.githubusercontent.com/id8-engineering/seven-test/$VERSION/scripts/test.sh" -o test.sh && chmod +x test.sh && ./test.sh --version "$VERSION"'
+bash -c 'VERSION=v0.0.3; mkdir -p "$HOME/seven-test" && cd "$HOME/seven-test" && curl -fL "https://raw.githubusercontent.com/id8-engineering/seven-test/$VERSION/scripts/test.sh" -o test.sh && chmod +x test.sh && ./test.sh --version "$VERSION"'
 ```
 
 ## Develop
