@@ -12,10 +12,12 @@ fi
 
 VERSION="$2"
 
-MODEM_FIRMWARE="firmware/mfw_nrf91x1_2.0.4.zip"
-MODEM_FIRMWARE_URL="https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sip/nrf91x1-sip/nrf91x1-lte-modem-firmware/mfw_nrf91x1_2.0.4.zip"
-TEST_FIRMWARE="firmware/seven-test-$VERSION.hex"
-TEST_FIRMWARE_URL="https://github.com/id8-engineering/seven-test/releases/download/$VERSION/seven-test.hex"
+ARCHIVE="seven-test-$VERSION.zip"
+ARCHIVE_URL="https://github.com/id8-engineering/seven-test/releases/download/$VERSION/$ARCHIVE"
+PACKAGE_DIR="seven-test-$VERSION"
+MODEM_FIRMWARE="$PACKAGE_DIR/firmware/mfw_nrf91x1_2.0.4.zip"
+TEST_FIRMWARE="$PACKAGE_DIR/seven-test.hex"
+REQUIREMENTS="$PACKAGE_DIR/requirements.txt"
 SERIAL_DEVICE_PATTERN="usb-Raspberry_Pi_Debug_Probe_*-if01"
 SERIAL_PORT="$(find /dev/serial/by-id -maxdepth 1 -type l \
   -name "$SERIAL_DEVICE_PATTERN" -print -quit 2>/dev/null || true)"
@@ -32,31 +34,27 @@ if [[ -z "$SERIAL_PORT" ]]; then
   exit 1
 fi
 
+if [[ ! -f "$ARCHIVE" ]]; then
+  status "Downloading Seven Test $VERSION"
+  curl -fL "$ARCHIVE_URL" -o "$ARCHIVE"
+fi
+
+if [[ ! -f "$TEST_FIRMWARE" || ! -f "$MODEM_FIRMWARE" || ! -f "$REQUIREMENTS" ]]; then
+  status "Extracting Seven Test $VERSION"
+  unzip -oq "$ARCHIVE" -d "$PACKAGE_DIR"
+fi
+
 status "Creating Python virtual environment"
 python3 -m venv .venv
 
 status "Installing Python dependencies"
-.venv/bin/pip install -r requirements.txt
-
-mkdir -p firmware
-
-if [[ -f "$MODEM_FIRMWARE" ]]; then
-  status "Using existing modem firmware"
-else
-  status "Downloading modem firmware"
-  curl -fL "$MODEM_FIRMWARE_URL" -o "$MODEM_FIRMWARE"
-fi
+.venv/bin/pip install -r "$REQUIREMENTS"
 
 status "Flashing modem firmware"
 .venv/bin/pyocd cmd -t nrf91 -f 100000 \
   -c "nrf91-update-modem-fw -f $MODEM_FIRMWARE"
 
-if [[ -f "$TEST_FIRMWARE" ]]; then
-  status "Using Seven Test $VERSION"
-else
-  status "Downloading Seven Test $VERSION"
-  curl -fL "$TEST_FIRMWARE_URL" -o "$TEST_FIRMWARE"
-fi
+status "Using Seven Test $VERSION"
 
 status "Opening $SERIAL_PORT"
 stty -F "$SERIAL_PORT" 115200 raw -echo

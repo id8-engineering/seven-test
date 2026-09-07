@@ -38,10 +38,18 @@ jobs:
 
       - name: Prepare firmware
         working-directory: seven-test
-        run: cp build/tests/zephyr/tfm_merged.hex seven-test.hex
+        run: |
+          mkdir -p release-package/firmware
+          cp build/tests/zephyr/tfm_merged.hex release-package/seven-test.hex
+          curl -fL \
+            https://nsscprodmedia.blob.core.windows.net/prod/software-and-other-downloads/sip/nrf91x1-sip/nrf91x1-lte-modem-firmware/mfw_nrf91x1_2.0.4.zip \
+            -o release-package/firmware/mfw_nrf91x1_2.0.4.zip
+          cp scripts/test.sh requirements.txt release-package/
+          cd release-package
+          zip -r "../seven-test-${{ github.event.release.tag_name }}.zip" .
 
-      - name: Upload firmware
+      - name: Upload test package
         working-directory: seven-test
-        run: gh release upload "${{ github.event.release.tag_name }}" seven-test.hex
+        run: gh release upload --clobber "${{ github.event.release.tag_name }}" "seven-test-${{ github.event.release.tag_name }}.zip"
         env:
           GH_TOKEN: ${{ github.token }}
