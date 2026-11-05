@@ -2,7 +2,7 @@
 
 Seven production test is tested and verified on:
 
-* Ubuntu 24.0
+* Ubuntu 26.04
 
 ## Prerequisites
 
